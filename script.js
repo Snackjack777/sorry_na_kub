@@ -13,7 +13,7 @@ function setInitialPosition() {
     const containerRect = buttonsContainer.getBoundingClientRect();
     
     // ตั้งค่าตำแหน่งเริ่มต้น (ด้านขวาของปุ่มใช่)
-    const initialX = containerRect.width / 2 + 20;
+    const initialX = containerRect.width / 2 + 50;
     const initialY = containerRect.height / 2 - noBtn.offsetHeight / 2;
     
     noBtn.style.left = initialX + 'px';
@@ -28,8 +28,8 @@ function getRandomPosition(button) {
     const yesBtnRect = yesBtn.getBoundingClientRect();
     
     // คำนวณขอบเขตที่ปุ่มสามารถเคลื่อนที่ได้ (ภายใน buttons container)
-    const maxX = containerRect.width - button.offsetWidth - 100;
-    const maxY = containerRect.height - button.offsetHeight - 100;
+    const maxX = containerRect.width - button.offsetWidth - 200;
+    const maxY = containerRect.height - button.offsetHeight - 200;
     const minX = 0;
     const minY = 0;
     
