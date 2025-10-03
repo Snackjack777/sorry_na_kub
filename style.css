@@ -21,12 +21,13 @@ body {
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     max-width: 500px;
+    width: 90%;
     position: relative;
-    /* เพิ่มสำหรับการเคลื่อนที่ของปุ่ม */
-    min-height: 400px;
+    /* กำหนดความสูงคงที่ */
+    min-height: 550px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
 }
 
 .heart {
@@ -42,6 +43,10 @@ body {
 
 .image-container {
     margin: 20px 0;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .couple-image {
@@ -52,6 +57,13 @@ body {
     border: 5px solid #ff6b6b;
     box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
     transition: transform 0.5s ease;
+}
+
+.message {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .message h1 {
@@ -68,14 +80,16 @@ body {
 }
 
 .buttons {
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
     position: relative;
     width: 100%;
-    min-height: 60px;
+    /* กำหนดความสูงคงที่สำหรับพื้นที่ปุ่ม */
+    height: 120px;
+    background: transparent;
 }
 
 .btn {
@@ -87,13 +101,14 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     min-width: 150px;
-    z-index: 10;
+    height: 60px;
 }
 
 .yes-btn {
     background: linear-gradient(45deg, #00b894, #00cec9);
     color: white;
     position: relative;
+    z-index: 10;
 }
 
 .yes-btn:hover {
@@ -104,8 +119,9 @@ body {
 .no-btn {
     background: linear-gradient(45deg, #e17055, #fab1a0);
     color: white;
-    position: relative;
-    transition: all 0.5s ease;
+    position: absolute;
+    transition: all 0.3s ease;
+    z-index: 5;
 }
 
 .no-btn:hover {
@@ -151,13 +167,13 @@ body {
     .container {
         margin: 20px;
         padding: 30px 20px;
-        min-height: 350px;
+        min-height: 500px;
     }
     
     .buttons {
         flex-direction: column;
         align-items: center;
-        min-height: 120px;
+        height: 180px;
     }
     
     .btn {
@@ -168,5 +184,60 @@ body {
     .couple-image {
         width: 150px;
         height: 150px;
+    }
+}
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+    /* กำหนดความสูงคงที่สำหรับพื้นที่ปุ่ม */
+    height: 120px;
+    background: transparent;
+    /* เพิ่มเพื่อให้เห็นขอบเขตในการดีบัก */
+    /* border: 1px dashed #ccc; */
+}
+
+.yes-btn {
+    background: linear-gradient(45deg, #00b894, #00cec9);
+    color: white;
+    position: relative;
+    z-index: 10;
+    /* กำหนดตำแหน่งคงที่สำหรับปุ่มใช่ */
+    transform: translateX(-50%);
+    left: 40%;
+}
+
+.no-btn {
+    background: linear-gradient(45deg, #e17055, #fab1a0);
+    color: white;
+    position: absolute;
+    transition: all 0.3s ease;
+    z-index: 5;
+    /* กำหนดขนาดให้ชัดเจน */
+    width: 150px;
+    height: 60px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+        height: 180px;
+    }
+    
+    .yes-btn {
+        transform: none;
+        left: auto;
+        position: relative;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 250px;
     }
 }
