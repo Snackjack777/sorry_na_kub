@@ -7,20 +7,65 @@ const happyImages = [
     'https://media.tenor.com/NFAZkuLYdqwAAAAm/%EB%AA%A8%EB%AA%A8%EC%B0%8C-%ED%8C%94%EC%A7%9D%ED%8C%94%EC%A7%9D.webp'
 ];
 
-// ฟังก์ชันสุ่มตำแหน่งภายในขอบเขตที่กำหนด
-function getRandomPosition(button) {
-    const container = document.querySelector('.container');
-    const containerRect = container.getBoundingClientRect();
+// ตั้งค่าตำแหน่งเริ่มต้นให้ปุ่ม "ไม่"
+function setInitialPosition() {
+    const buttonsContainer = document.querySelector('.buttons');
+    const containerRect = buttonsContainer.getBoundingClientRect();
     
-    // คำนวณขอบเขตที่ปุ่มสามารถเคลื่อนที่ได้ (ภายใน container)
-    const maxX = containerRect.width - button.offsetWidth - 20;
-    const maxY = containerRect.height - button.offsetHeight - 20;
+    // ตั้งค่าตำแหน่งเริ่มต้น (ด้านขวาของปุ่มใช่)
+    const initialX = containerRect.width / 2 + 20;
+    const initialY = containerRect.height / 2 - noBtn.offsetHeight / 2;
+    
+    noBtn.style.left = initialX + 'px';
+    noBtn.style.top = initialY + 'px';
+}
+
+// ฟังก์ชันสุ่มตำแหน่งภายในขอบเขตที่กำหนด (ไม่ซ้อนกับปุ่มใช่)
+function getRandomPosition(button) {
+    const buttonsContainer = document.querySelector('.buttons');
+    const containerRect = buttonsContainer.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
+    const yesBtnRect = yesBtn.getBoundingClientRect();
+    
+    // คำนวณขอบเขตที่ปุ่มสามารถเคลื่อนที่ได้ (ภายใน buttons container)
+    const maxX = containerRect.width - button.offsetWidth - 100;
+    const maxY = containerRect.height - button.offsetHeight - 100;
     const minX = 0;
     const minY = 0;
     
-    // สุ่มตำแหน่งภายในขอบเขต
-    const x = Math.random() * (maxX - minX) + minX;
-    const y = Math.random() * (maxY - minY) + minY;
+    let x, y;
+    let attempts = 0;
+    const maxAttempts = 20;
+    
+    // สุ่มตำแหน่งที่ไม่ซ้อนกับปุ่มใช่
+    do {
+        x = Math.random() * (maxX - minX) + minX;
+        y = Math.random() * (maxY - minY) + minY;
+        attempts++;
+        
+        // ตรวจสอบว่าซ้อนกับปุ่มใช่หรือไม่
+        const noBtnLeft = x;
+        const noBtnRight = x + button.offsetWidth;
+        const noBtnTop = y;
+        const noBtnBottom = y + button.offsetHeight;
+        
+        const yesBtnLeft = yesBtn.offsetLeft;
+        const yesBtnRight = yesBtnLeft + yesBtn.offsetWidth;
+        const yesBtnTop = yesBtn.offsetTop;
+        const yesBtnBottom = yesBtnTop + yesBtn.offsetHeight;
+        
+        // ตรวจสอบการซ้อนทับ
+        const isOverlapping = !(noBtnRight < yesBtnLeft || 
+                               noBtnLeft > yesBtnRight || 
+                               noBtnBottom < yesBtnTop || 
+                               noBtnTop > yesBtnBottom);
+        
+        // ถ้าไม่ซ้อนและยังอยู่ในขอบเขต ให้ออกจาก loop
+        if (!isOverlapping && x >= minX && x <= maxX && y >= minY && y <= maxY) {
+            break;
+        }
+        
+    } while (attempts < maxAttempts);
     
     return { x, y };
 }
@@ -29,7 +74,6 @@ function getRandomPosition(button) {
 function moveNoButton() {
     const { x, y } = getRandomPosition(noBtn);
     
-    noBtn.style.position = 'absolute';
     noBtn.style.left = x + 'px';
     noBtn.style.top = y + 'px';
     
@@ -121,5 +165,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
     
     // ตั้งค่าเริ่มต้นให้ปุ่ม "ไม่"
-    noBtn.style.position = 'relative';
+    noBtn.style.position = 'absolute';
+    // ตั้งค่าตำแหน่งเริ่มต้นหลังจากโหลดหน้าเว็บเสร็จ
+    setTimeout(setInitialPosition, 100);
 });
+
+// ตั้งค่าตำแหน่งใหม่เมื่อรีไซส์หน้าต่าง
+window.addEventListener('resize', setInitialPosition);
